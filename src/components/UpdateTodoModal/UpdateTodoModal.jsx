@@ -1,33 +1,30 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 
 const UpdateTodoModal = ({ showUpdateModal, updateData, handleUpdateModalClose }) => {
 
 
-    const { title, note, start_date, start_time, end_date, end_time } = updateData || {};
-    // useEffect(() => {
-    //     fetch(`http://task.atiar.info/api/todo/update/${id}`)
-    //         .then(res => res.json())
-    //         .then(data => setUpdateTodo(data));
-    // }, [id]);
+    const { id, title, note, start_date, start_time, end_date, end_time } = updateData || {};
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const onSubmit = data => {
-        const url = `http://task.atiar.info/api/todo/update`;
+        data.id = id;
         const proceed = window.confirm('Are you want to update this product');
         if (proceed) {
-            axios.put(url, data)
+            axios.post('http://task.atiar.info/api/todo/update', data)
                 .then(res => {
-                    console.log(res.data);
-                    reset();
+                    if (res) {
+                        // console.log(res)
+                        reset();
+                        handleUpdateModalClose();
 
+                    }
 
                 });
         }
-        console.log(data)
+        // console.log(data)
     };
     console.log(errors);
 

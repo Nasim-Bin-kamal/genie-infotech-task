@@ -11,7 +11,7 @@ const AddTodoModal = ({ showModal, handleModalClose }) => {
     const onSubmit = data => {
         axios.post('http://task.atiar.info/api/todo/create', data)
             .then(res => {
-                if (res?.data.success === true) {
+                if (res) {
                     console.log(res.data)
                     reset();
                     handleModalClose();

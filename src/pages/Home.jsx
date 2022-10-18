@@ -28,15 +28,13 @@ const Home = () => {
     }, []);
 
     const handleDeleteProduct = (id) => {
-        // console.log(id)
-        const url = `http://task.atiar.info/api/todo/delete/${id}`;
+
         const proceed = window.confirm('Are you want to delete this todo');
         if (proceed) {
-            axios.delete(url)
+            axios.post('http://task.atiar.info/api/todo/delete', id)
                 .then(res => {
-                    console.log(res.data.date);
-                    if (res.data > 0) {
-
+                    if (res.data) {
+                        console.log(res)
                         const remainingTodos = todos?.filter(todo => todo.id !== id);
                         setTodos(remainingTodos);
                     }
@@ -46,10 +44,22 @@ const Home = () => {
 
     }
 
+    const handleCompleteTodo = (id) => {
+        console.log('this is id', id);
+        axios.post('http://task.atiar.info/api/todo/complete', id)
+            .then(res => {
+                if (res.data) {
+                    console.log(res)
+
+                }
+
+            });
+    }
+
     return (
         <div>
-            <Container>
-                <h1>All todos</h1>
+            <Container className='mx-auto my-5'>
+
                 <div className='d-flex justify-content-end'>
                     <Button onClick={handleModalShow}>Add ToDo</Button>
                 </div>
@@ -63,7 +73,9 @@ const Home = () => {
                                     <p>Start Date: {todo?.start_date} at {todo?.start_time} - {todo?.end_date} at {todo?.end_time}</p>
                                 </div>
                                 <div>
-                                    <AiFillCheckSquare className="mx-1 fs-4" />
+                                    <AiFillCheckSquare
+                                        onClick={() => handleCompleteTodo(todo?.id)}
+                                        className="mx-1 fs-4" />
                                     <FaEdit
 
                                         onClick={() => handleUpdateModalShow(todo)}
