@@ -2,19 +2,27 @@ import axios from 'axios';
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 
-const AddTodoModal = ({ showModal, handleModalClose }) => {
+const AddTodoModal = ({ showModal, setTodos, handleModalClose }) => {
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     const onSubmit = data => {
-        axios.post('http://task.atiar.info/api/todo/create', data)
+        axios.post('https://task.atiar.info/api/todo/create', data)
             .then(res => {
-                if (res) {
-                    console.log(res.data)
+                if (res.data) {
+                    console.log(res.data.data)
                     reset();
                     handleModalClose();
+                    // window.location.reload();
+
+                    toast.success(res.data.message, {
+                        position: 'top-center',
+                        autoClose: 2000
+                    })
+                    setTodos(res?.data?.data);
 
                 }
 
@@ -25,7 +33,7 @@ const AddTodoModal = ({ showModal, handleModalClose }) => {
 
     return (
         <div>
-            <Modal show={showModal} onHide={handleModalClose}>
+            <Modal show={showModal} onHide={handleModalClose} >
                 <Modal.Header closeButton>
                     <Modal.Title className='text-center'>
                         <h4 >Add Todo</h4>
@@ -44,6 +52,7 @@ const AddTodoModal = ({ showModal, handleModalClose }) => {
                                 <input className="w-100 mx-auto my-2 p-1 border border-2 rounded-3" type="time" placeholder="Start Time" {...register("start_time", { required: true })} />
                             </div>
                             <div className='d-flex mx-2 w-100'>
+
                                 <input className="w-100  me-2 my-2 p-1 border border-2 rounded-3" type="date" placeholder="End Date" {...register("end_date", { required: true })} />
                                 <input className="w-100  mx-auto my-2 p-1 border border-2 rounded-3" type="time" placeholder="End Time" {...register("end_time", { required: true })} />
                             </div>

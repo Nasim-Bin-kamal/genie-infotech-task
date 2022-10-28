@@ -1,0 +1,17 @@
+.todos-section {
+  height: 80vh;
+  overflow-y: scroll;
+}
+.btn-delete {
+  color: #ff4949;
+  cursor: pointer;
+}
+.btn-update {
+  color: #b517ff;
+  cursor: pointer;
+}
+
+.btn-checked {
+  color: #106cfc;
+  cursor: pointer;
+}
